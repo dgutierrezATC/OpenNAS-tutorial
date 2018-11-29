@@ -41,6 +41,9 @@
 \usepackage{xcolor}
 \usepackage{subcaption}
 \usepackage{float}
+\usepackage{acronym} 
+
+\acrodef{FPGA}[FPGA]{Field Programmable Gate Array}
 
 \begin{document}
 
@@ -63,7 +66,7 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{ \huge \bfseries OpenNAS for dummies}\\[0.4cm] % Title of your document
+{ \huge \bfseries OpenNAS tutorial}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
  
 %----------------------------------------------------------------------------------------
@@ -116,7 +119,7 @@ Alejandro \textsc{Linares}
 
 
 \begin{abstract}
-OpenNAS is a software tool to customize, create, and generate a Neuromorphic Auditory Sensor (NAS) model ready to be loaded within the FPGA-based AER-Node board. It is the result of many research years in the field of neuromorphic engineering, in which our research group has enough experience. As its name indicates, this spike-based auditory sensor tries to mimic the human ear and the way in which it works. OpenNAS can be divided in three main blocks: the input, where the sound is obtained, digitized and converted into spikes; the spike-based audio processing step, where the input spikes are decomposed into frequency channels, and, finally, the output stage, where the output interface through which the spikes are going to be sent is selected. Since there is not a standard "cochlea configuration", OpenNAS tool offers the possibility to set a large set of parameters with the aim of providing the best approach for the required spike-based audio applications.
+OpenNAS is an open source VHDL-based Neuromorphic Auditory Sensor (NAS) code generator capable of automatically generating the necessary files to create a VHDL project for FPGA. OpenNAS guides designers with a friendly interface and allows NAS specification using a five-steps wizard for later code generation. It includes several audio input interfaces (AC'97 audio codec, I2S ADC and PDM microphones), different processing architectures (cascade and parallel), and a set of neuromorphic output interfaces (parallel AER, Spinnaker). After NAS generation, designers have everything prepared for building and synthesizing the VHDL project for a target FPGA using manufacturer's tools. 
 \end{abstract}
 
 \section{Introduction}
@@ -124,22 +127,22 @@ OpenNAS is a software tool to customize, create, and generate a Neuromorphic Aud
 %----------------------------------------------------------------------------------------
 %	NAS original paper
 %----------------------------------------------------------------------------------------
-\textit{``This paper presents a new architecture, design flow and FPGA implementation analysis of a neuromorphic binaural auditory sensor, designed completely in the spike-domain. Unlike digital cochleae that decompose audio signals using classical Digital Signal Processing (DSP) techniques, the model presented in this paper processes information directly encoded as spikes using Pulse Frequency Modulation (PFM) and provides a set of frequency-decomposed audio information using an Address-Event Representation (AER) interface. In this case, a systematic approach to design led to a generic process for building, tuning and implementing audio frequency decomposers with different features, facilitating synthesis with custom features. This allows researchers to implement their own parameterized neuromorphic auditory systems in a low cost FPGA in order to study the audio processing and learning activity that takes place in the brain. In this paper we present a 64 channel binaural neuromorphic auditory system implemented in a Virtex-5 FPGA using a commercial development board. The system was excited with a diverse set of audio signals in order to analyze its response and characterize its features. The neuromorphic auditory system response times and frequencies are reported. The experimental results of the proposed system implementation with 64 channels stereo are: frequency range between 9.6Hz to 14.6KHz (adjustable), maximum output event rate of 2.19Mevents/sec, power consumption of 29.7mW, slices requirements of 11,141 and system clock frequency of 27MHz."} 
+\textit{"This paper presents a new architecture, design flow and FPGA implementation analysis of a neuromorphic binaural auditory sensor, designed completely in the spike-domain. Unlike digital cochleae that decompose audio signals using classical Digital Signal Processing (DSP) techniques, the model presented in this paper processes information directly encoded as spikes using Pulse Frequency Modulation (PFM) and provides a set of frequency-decomposed audio information using an Address-Event Representation (AER) interface. In this case, a systematic approach to design led to a generic process for building, tuning and implementing audio frequency decomposers with different features, facilitating synthesis with custom features. This allows researchers to implement their own parameterized neuromorphic auditory systems in a low-cost FPGA in order to study the audio processing and learning activity that takes place in the brain. In this paper, we present a 64 channel binaural neuromorphic auditory system implemented in a Virtex-5 FPGA using a commercial development board. The system was excited with a diverse set of audio signals in order to analyze its response and characterize its features. The neuromorphic auditory system response times and frequencies are reported. The experimental results of the proposed system implementation with 64 channels stereo are: frequency range between 9.6Hz to 14.6KHz (adjustable), a maximum output event rate of 2.19Mevents/sec, a power consumption of 29.7mW, slices requirements of 11,141 and system clock frequency of 27MHz."} 
 
 %----------------------------------------------------------------------------------------
 %	Spike-based Signal Processing blocks experience
 %----------------------------------------------------------------------------------------
 
-This paragraph belongs to the NAS \cite{jimenez2017binaural} original paper (its abstract). At the beginning, the idea was to design, develop and test spike-base processing blocks, which we called building blocks, to offer the community a way to develop more complex spike-based systems. We succeed in the development of spike-based motor controllers and spike-based filters.
+This paragraph belongs to the NAS \cite{jimenez2017binaural} original paper (its abstract). At the beginning, the idea was to design, develop and test spike-based processing blocks, which we called building blocks, to offer the community a way to develop more complex spike-based systems. We succeed in the development of spike-based motor controllers and spike-based filters.
 
-Spike-based motor control blocks implement complex operations. However, in the spike domain, those operations are easier to solve than using the classical methods. One example of this simplification could be... Basic operations, like additions and subtractions were also implemented in the spike-domain. More information about how those operations work can be found in \cite{jimenez2010building}.
+Spike-based motor control blocks implement complex operations. However, in the spike domain, those operations are easier to solve than using classical methods. One example of this simplification could be... Basic operations, like additions and subtractions, were also implemented in the spike-domain. More information about how those operations work can be found in \cite{jimenez2010building}.
 %\todo{Under development}
 
 %----------------------------------------------------------------------------------------
 %	NAS motivation
 %----------------------------------------------------------------------------------------
 
-One of the most important spike-based block designed in this work was the band-pass filter, because it allowed to implement a filter bank, and then, to decompose a input signal into different frequency bands. It made it possible to work on our own Neuromorphic Auditory Sensor. The inspiration was taken from important authors as Lyon \cite{lyon1988analog}, among others, who developed bio-inspired analog cochlea model.
+One of the most important spike-based block designed in this work was the band-pass filter because it allowed to implement a filter bank, and then, to decompose an input signal into different frequency bands. It made it possible to work on our own Neuromorphic Auditory Sensor. The inspiration was taken from important authors as Lyon \cite{lyon1988analog}, among others, who developed a bio-inspired analogue cochlea model.
 
 \begin{figure}[H]
   \centering
@@ -152,8 +155,8 @@ One of the most important spike-based block designed in this work was the band-p
   \\%
   \begin{minipage}[b]{1\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{NAS_Block_Diagram.png}
-    \caption{Top: biological model of human ear. Bottom: NAS architecture block diagram.}
+    \includegraphics[width=1\textwidth]{NAS_full_arch_stereo.pdf}
+    \caption{Top: biological model of the human ear. Bottom: NAS architecture block diagram.}
     \label{fig:nas_block_diagram}
   \end{minipage}
 \end{figure}
@@ -163,7 +166,7 @@ One of the most important spike-based block designed in this work was the band-p
 %	What did we develop?
 %----------------------------------------------------------------------------------------
 
-As a complex system, and based on the state of the art, the NAS is composed by several spike-based processing blocks, and it could be separated into three well differentiated and independent parts:
+As a complex system, and based on the state of the art, the NAS is composed of several spike-based processing blocks, and it could be separated into three well differentiated and independent parts:
 \begin{itemize}
 \item Audio Input,
 \item Processing stage,
@@ -178,7 +181,7 @@ And don't be afraid if the NAS doesn't work as you hope. You will have infinite 
 %	Now, we are able to...
 %----------------------------------------------------------------------------------------
 
-By using OpenNAS software, the user will be able to configure each of those three parts separately. The tool has been developed to easily configure and generate........ 
+By using OpenNAS software, the user will be able to configure each of those three parts separately. The tool has been developed to easily configure and generate a NAS model. 
 
 %----------------------------------------------------------------------------------------
 %	Future works
@@ -190,9 +193,9 @@ By using OpenNAS software, the user will be able to configure each of those thre
 \subsection{Requirements}
 
 \begin{itemize}
-    \item \textbf{SOFTWARE}: First of all, we need to check some software requirements to be sure that OpenNAS tool is going to work properly. All the software packages belong to Microsoft .NET Framework. Therefore, we will need a \textbf{Microsoft Windows OS} version running in the computer (Windows7 or Windows10). If you are not a Windows user (probably because you prefer a Linux distribution), you will need a Virtual Machine (VM) and a Windows installation. Furthermore, you should download the needed software. As IDE, \textbf{Visual Studio} was used since it provides an easy way to design Graphical User Interfaces (GUI) for Microsoft Windows OS. We will also need an specific framework, which includes features used in our software tool. More specific, we need to download and install both \textbf{.NET Framework 4.0} and \textbf{.NET Framework 4.5}.One of the best advantages that OpenNAS provides is the capacity of automatically generating the FPGA programming file (.bit extension) without either configure or create any project. This option is useful for people who are not familiarized with VHDL design. But, independently of what you need, you have to install \textbf{Xilinx ISE or Vivado} (depending of the board that you use). For the AER-Node board (device by default), you will need ISE. For the rest, Vivado for Xilinx FPGA chips (supported by OpenNAS); or Intel Quartus Prime Design Software for Altera FPGA chips (not supported yet).Finally, since we are going to use a specific manufacturer, you will also need a proprietary software to download the programming file into the FPGA board. \textbf{iMPACT} allows you either programming the FPGA using the RAM memory (volatile option) or the FLASH memory (non-volatile option). It is usually installed at the same time that ISE is being installed. But if not, you can go to the Xilinx Download Center website and download the software.
+    \item \textbf{SOFTWARE}: First of all, we need to check some software requirements to be sure that OpenNAS tool is going to work properly. All the software packages belong to the Microsoft .NET Framework. Therefore, we will need a \textbf{Microsoft Windows OS} version running on the computer (Windows7 or Windows10). If you are not a Windows user (probably because you prefer a Linux distribution), you will need a Virtual Machine (VM) and a Windows installation. Furthermore, you should download the needed software. As IDE, \textbf{Visual Studio} was used since it provides an easy way to design Graphical User Interfaces (GUI) for Microsoft Windows OS. We will also need a specific framework, which includes features used in our software tool. More specific, we need to download and install both \textbf{.NET Framework 4.0} and \textbf{.NET Framework 4.5}. One of the best advantages that OpenNAS provides is the capacity of automatically generating the FPGA programming file (.bit extension) without either configure or create any project. This option is useful for people who are not familiarized with VHDL design. But, independently of what you need, you have to install \textbf{Xilinx ISE or Vivado} (depending on the board that you use). For the AER-Node board (device by default), you will need ISE. For the rest, Vivado for Xilinx FPGA chips (supported by OpenNAS); or Intel Quartus Prime Design Software for Altera FPGA chips (not supported yet). Finally, since we are going to use a specific manufacturer, you will also need a proprietary software to download the programming file into the FPGA board. \textbf{iMPACT} allows you either programming the FPGA using the RAM memory (volatile option) or the FLASH memory (non-volatile option). It is usually installed at the same time that ISE is being installed. But if not, you can go to the Xilinx Download Center website and download the software
     
-    \item \textbf{HARDWARE}: About the hardware requirements, you can use your own boards, but we can not offer any guaranties about the system operation. If you are interested on to use our neuromorphic hardware, please visit the \textcolor{blue}{\href{https://www.t-cober.es}{COBER}} web site and check the neuromorphic hardware catalog.
+    \item \textbf{HARDWARE}: About the hardware requirements, you can use your own boards, but we can not offer any guarantees about the system operation. If you are interested to use our neuromorphic hardware, please visit the \textcolor{blue}{\href{https://www.t-cober.es}{COBER}} website and check the neuromorphic hardware catalogue.
     
 \end{itemize}
 
@@ -418,7 +421,7 @@ By using OpenNAS software, the user will be able to configure each of those thre
 
 At this point, we are ready to start using the OpenNAS software tool. Maybe, you now can think "Did I not ready before to read about spike-based signal processing?" Well, for getting started you do not need to be a professional on that topic, but if your target is to implement complex systems, it would be good to know how the NAS works.
 
-We will split the tutorial to use OpenNAS in three parts: first we need to download the project from the NAS GitHub web page. After that, we have to either run the OpenNAS .exe file or open the OpenNAS VisualStudio project, in order to follow the OpenNAS wizard. And finally, to create an ISE project to generate the programming file needed to be loaded into the FPGA. 
+We will split the tutorial to use OpenNAS in three parts: first, we need to download the project from the NAS GitHub web page. After that, we have to either run the OpenNAS .exe file or open the OpenNAS VisualStudio project, in order to follow the OpenNAS wizard. And finally, to create an ISE project to generate the programming file needed to be loaded into the FPGA. 
 
 Let's do it!
 
@@ -436,7 +439,7 @@ First, click on the \textcolor{blue}{ \href{https://github.com/RTC-research-grou
 \caption{\label{fig:OpenNAS_repo}OpenNAS GitHub repository.}
 \end{figure}
 
-If that link does not work either, try to navigate to the RTC research group and look for the OpenNAS repository (https://github.com/RTC-research-group). There you can find a useful tool set to work with AER-based devices.
+If that link does not work either, try to navigate to the RTC research group and look for the OpenNAS repository (https://github.com/RTC-research-group). There you can find a useful toolset to work with AER-based devices.
 
 \begin{figure}[H]
 \centering
@@ -444,7 +447,7 @@ If that link does not work either, try to navigate to the RTC research group and
 \caption{\label{fig:RTC_GitHub_page}Robotics and Technology of Computers Lab. (RTC) GitHub page.}
 \end{figure}
 
-Once you are in the OpenNAS repository, there you can find a short wiki/tutorial about what is OpenNAS, how to getting started, how to use, how to contribute and, of course, how to cite our work. For us is very important the citations, so don't be shy. That wiki will be useful, but you can find more detailed information in this user manual.
+Once you are in the OpenNAS repository, there you can find a short wiki/tutorial about what is OpenNAS, how to get started, how to use, how to contribute and, of course, how to cite our work. For us is very important the citations, so don't be shy. That wiki will be useful, but you can find more detailed information in this user manual.
 
 \begin{figure}[H]
 \centering
@@ -452,7 +455,7 @@ Once you are in the OpenNAS repository, there you can find a short wiki/tutorial
 \caption{\label{fig:OpenNAS_wiki}OpenNAS wiki overview.}
 \end{figure}
 
-The next step is either to download the project in your computer or to clone it. It depends on what do you prefer. And feel free if you want to contribute. You will be welcome!
+The next step is either to download the project on your computer or to clone it. It depends on what do you prefer. And feel free if you want to contribute. You will be welcome!
 
 \begin{figure}[H]
 \centering
@@ -476,9 +479,9 @@ Constraints folder is an important folder. It contains the files that you need t
 \caption{\label{fig:OpenNAS_Constraints}Constraints files available from OpenNAS.}
 \end{figure}
 
-\textbf{Take care with that! This file is the main errors source.}
+\textbf{Take care with that! This file is the main error source.}
 
-Related with the VHDL files, the SSP (Spike-based Signal Processing) folder contains all of the source code of the NAS. You should not modify those files, otherwise NAS could not work properly. But you can check how the NAS has been implemented using HDL code. 
+Related with the VHDL files, the SSP (Spike-based Signal Processing) folder contains all of the source code of the NAS. You should not modify those files, because otherwise, NAS could not work properly. But you can check how the NAS has been implemented using HDL code. 
 
 \begin{figure}[H]
 \centering
@@ -546,7 +549,7 @@ Now, the most difficult part: click on the "Start" button. A new window like the
 
 \textbf{CONGRATULATIONS}, OpenNAS is now running! That is the main window of the wizard. It just has one button to go forward to the wizard. Click on "Next" button to watch the next step of the NAS generation wizard.
 
-In the step 1, users can select the NAS common settings, as the FPGA-based board in which the NAS will be loaded. NAS type (mono or stereo) and the numbers of channels can be set too. Be careful with the last field, the clock frequency. It will be used to set the spike-based processing blocks parameters correctly. By default, each board set this field automatically according with the board clock (except if you choose "Others"). However, if you want use another clock configuration, you can change the clock value. \textbf{Make sure you also implement this change in the VHDL files and ISE project!}
+In step 1, users can select the NAS common settings, as the FPGA-based board in which the NAS will be loaded. NAS type (mono or stereo) and the numbers of channels can be set too. Be careful with the last field, the clock frequency. It will be used to set the spike-based processing blocks parameters correctly. By default, each board set this field automatically according with the board clock (except if you choose "Others"). However, if you want to use another clock configuration, you can change the clock value. \textbf{Make sure you also implement this change in the VHDL files and ISE project!}
 
 \begin{figure}[H]
 \centering
@@ -554,7 +557,7 @@ In the step 1, users can select the NAS common settings, as the FPGA-based board
 \caption{\label{fig:OpenNAS_common_settings}First step of OpenNAS wizard. In this step, NAS common settings can be changed.}
 \end{figure}
 
-Here there is another option of board where NAS has been tested. If we check the clock frequency, its value has been set to 100 MHz.
+Here there is another board option where NAS has been tested. If we check the clock frequency, its value has been set to 100 MHz.
 
 \begin{figure}[H]
 \centering
@@ -562,9 +565,9 @@ Here there is another option of board where NAS has been tested. If we check the
 \caption{\label{fig:OpenNAS_s1}Setting the NAS chip to SOC\_DOCK board.}
 \end{figure}
 
-After the target board has been selected, and the common settings has been set according to your needs, it is time to select which audio input we will use. Clicking on "Next" button, we will go to the second step of the NAS wizard.
+After the target board has been selected, and the common settings have been set according to your needs, it is time to select which audio input we will use. Clicking on the "Next" button, we will go to the second step of the NAS wizard.
 
-AC'97 audio codec is selected by default. Although it is not used in the AER-Node board, it was the first audio input device used by other Xilinx FPGA-based board. This option let you only to modify the spikes generation module clock divisor.
+The AC'97 audio codec is selected by default. Although it is not used in the AER-Node board, it was the first audio input device used by other Xilinx FPGA-based board. This option let you only to modify the spikes generation module clock divisor.
 
 \begin{figure}[H]
 \centering
@@ -651,9 +654,6 @@ We recommend to create a very simple folders architecture: the main folder, name
 \end{figure}
 
 If everything is OK, a message window should appear telling you "OpenNAS successfully generated" and also showing you the destination folder. At this point, NAS HDL files has been generated taking into account your preferences, and you can take a look of the source code.
-
-Anadir vista de los archivos que genera y que son cada uno. Hablar del xml.
-
 
 
 %----------------------------------------------------------------------------------------
