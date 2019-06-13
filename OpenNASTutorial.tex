@@ -43,6 +43,7 @@
 \usepackage{float}
 \usepackage{acronym} 
 
+
 \acrodef{FPGA}[FPGA]{Field Programmable Gate Array}
 
 \begin{document}
@@ -53,14 +54,14 @@
 
 \center % Center everything on the page
  
+ 
 %----------------------------------------------------------------------------------------
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
 
 \textsc{\LARGE University of Sevilla}\\[1.5cm] % Name of your university/college
-\textsc{\Large Architecture and Technology of Computers Dept.}\\[0.5cm] % Major heading such as course name
-\textsc{\large Robotics and Technology of Computers Lab.}\\[0.5cm] % Minor heading such as course title
-
+\textsc{\Large Robotics and Technology of Computers Lab.}\\[0.5cm] % Major heading such as course name
+\textsc{\large Architecture and Technology of Computers Dept.}\\[0.5cm] % Minor heading such as course title
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
@@ -73,14 +74,14 @@
 %	AUTHOR SECTION
 %----------------------------------------------------------------------------------------
 
-\begin{minipage}{0.4\textwidth}
+\begin{minipage}{0.6\textwidth}
 
 \begin{flushleft} \large
 \emph{Authors:}\\
-Daniel \textsc{Gutierrez} \\ % Your name
-Juan Pedro \textsc{Dominguez} \\
-Angel \textsc{Jimenez} \\
-Alejandro \textsc{Linares}
+Daniel \textsc{Gutierrez-Galan} \\ % Your name
+Juan Pedro \textsc{Dominguez-Morales} \\
+Angel \textsc{Jimenez-Fernandez} \\
+Alejandro \textsc{Linares-Barranco}
 \end{flushleft}
 \end{minipage}
 ~
@@ -106,7 +107,7 @@ Alejandro \textsc{Linares}
 %	LOGO SECTION
 %----------------------------------------------------------------------------------------
 \begin{center}
-\includegraphics[width=0.8\textwidth]{logo.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+\includegraphics[width=0.8\textwidth]{Img_OpenNAS_extended_logo.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
 \end{center}
 
 
@@ -117,10 +118,15 @@ Alejandro \textsc{Linares}
 
 \end{titlepage}
 
-
 \begin{abstract}
-OpenNAS is an open source VHDL-based Neuromorphic Auditory Sensor (NAS) code generator capable of automatically generating the necessary files to create a VHDL project for FPGA. OpenNAS guides designers with a friendly interface and allows NAS specification using a five-steps wizard for later code generation. It includes several audio input interfaces (AC'97 audio codec, I2S ADC and PDM microphones), different processing architectures (cascade and parallel), and a set of neuromorphic output interfaces (parallel AER, Spinnaker). After NAS generation, designers have everything prepared for building and synthesizing the VHDL project for a target FPGA using manufacturer's tools. 
+OpenNAS is an open source VHDL-based Neuromorphic Auditory Sensor (NAS) code generator capable of automatically generate the necessary files to create a NAS-VHDL project for FPGA. OpenNAS guides designers with a friendly interface that allows configuring the NAS using a five-steps wizard for later code generation. It includes several audio input interfaces (AC'97 audio codec, I2S ADC and PDM microphones), different processing architectures (cascade and parallel), and a set of neuromorphic output interfaces (parallel AER, Spinnaker). After NAS generation, designers have everything prepared for building and synthesising the VHDL project for a target FPGA. 
 \end{abstract}
+\newpage
+
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
 
 \section{Introduction}
 \label{sec:Introduction}
@@ -128,21 +134,19 @@ OpenNAS is an open source VHDL-based Neuromorphic Auditory Sensor (NAS) code gen
 %	NAS original paper
 %----------------------------------------------------------------------------------------
 \textit{"This paper presents a new architecture, design flow and FPGA implementation analysis of a neuromorphic binaural auditory sensor, designed completely in the spike-domain. Unlike digital cochleae that decompose audio signals using classical Digital Signal Processing (DSP) techniques, the model presented in this paper processes information directly encoded as spikes using Pulse Frequency Modulation (PFM) and provides a set of frequency-decomposed audio information using an Address-Event Representation (AER) interface. In this case, a systematic approach to design led to a generic process for building, tuning and implementing audio frequency decomposers with different features, facilitating synthesis with custom features. This allows researchers to implement their own parameterized neuromorphic auditory systems in a low-cost FPGA in order to study the audio processing and learning activity that takes place in the brain. In this paper, we present a 64 channel binaural neuromorphic auditory system implemented in a Virtex-5 FPGA using a commercial development board. The system was excited with a diverse set of audio signals in order to analyze its response and characterize its features. The neuromorphic auditory system response times and frequencies are reported. The experimental results of the proposed system implementation with 64 channels stereo are: frequency range between 9.6Hz to 14.6KHz (adjustable), a maximum output event rate of 2.19Mevents/sec, a power consumption of 29.7mW, slices requirements of 11,141 and system clock frequency of 27MHz."} 
-
+\\
 %----------------------------------------------------------------------------------------
 %	Spike-based Signal Processing blocks experience
 %----------------------------------------------------------------------------------------
 
-This paragraph belongs to the NAS \cite{jimenez2017binaural} original paper (its abstract). At the beginning, the idea was to design, develop and test spike-based processing blocks, which we called building blocks, to offer the community a way to develop more complex spike-based systems. We succeed in the development of spike-based motor controllers and spike-based filters.
+Latter paragraph is the abstract to the NAS \cite{jimenez2017binaural} original paper. At the beginning, the idea was to design, develop and test spike-based processing blocks, which we called building blocks, to offer the community a way to develop more complex spike-based systems. We succeed in the development of spike-based motor controllers and spike-based filters.
 
-Spike-based motor control blocks implement complex operations. However, in the spike domain, those operations are easier to solve than using classical methods. One example of this simplification could be... Basic operations, like additions and subtractions, were also implemented in the spike-domain. More information about how those operations work can be found in \cite{jimenez2010building}.
+Spike-based motor control blocks implement complex operations. However, in the spike domain, those operations are easier to solve than using classical methods. One example of this simplification could be the spike integrate \& generate, which mimics the integrate \& fire neuron behavior. Basic operations, like additions and subtractions, were also implemented in the spike-domain. More information about how those operations work can be found in \cite{jimenez2010building}.
 %\todo{Under development}
 
 %----------------------------------------------------------------------------------------
 %	NAS motivation
 %----------------------------------------------------------------------------------------
-
-One of the most important spike-based block designed in this work was the band-pass filter because it allowed to implement a filter bank, and then, to decompose an input signal into different frequency bands. It made it possible to work on our own Neuromorphic Auditory Sensor. The inspiration was taken from important authors as Lyon \cite{lyon1988analog}, among others, who developed a bio-inspired analogue cochlea model.
 
 \begin{figure}[H]
   \centering
@@ -161,65 +165,148 @@ One of the most important spike-based block designed in this work was the band-p
   \end{minipage}
 \end{figure}
 
+One of the most important spike-based block designed in this work was the spike-based band-pass filter because it allowed to implement a filter bank, and then, to decompose an input signal into different frequency bands. It made it possible to work on our own Neuromorphic Auditory Sensor. The inspiration was taken from the work of important authors as Lyon \cite{lyon1988analog}, among others, who developed a bio-inspired analogue cochlea model.
 
 %----------------------------------------------------------------------------------------
 %	What did we develop?
 %----------------------------------------------------------------------------------------
 
-As a complex system, and based on the state of the art, the NAS is composed of several spike-based processing blocks, and it could be separated into three well differentiated and independent parts:
-\begin{itemize}
-\item Audio Input,
-\item Processing stage,
-\item Output interface.
-\end{itemize}
+%As a complex system, and based on the state of the art, the NAS is composed of several spike-based processing blocks, and it could be separated into three main parts:
+
+%\begin{itemize}
+%\item Audio Input,
+%\item Processing stage,
+%\item Output interface.
+%\end{itemize}
 
 %Decir que se ha hecho el nas para ahorrar tiempo debido a que es para fpga y \todo[inline, color=green!40]{tienes que instanciar todos los bloauqes a mano.}
 
-And don't be afraid if the NAS doesn't work as you hope. You will have infinite tries to get the perfect one! :)
+%And don't be afraid if the NAS doesn't work as you hope. You will have infinite tries to get the perfect one! :)
 
 %----------------------------------------------------------------------------------------
 %	Now, we are able to...
 %----------------------------------------------------------------------------------------
 
-By using OpenNAS software, the user will be able to configure each of those three parts separately. The tool has been developed to easily configure and generate a NAS model. 
+%By using OpenNAS software, the user will be able to configure each of those three parts separately. The tool has been developed to easily configure and generate a NAS model. 
 
 %----------------------------------------------------------------------------------------
 %	Future works
 %----------------------------------------------------------------------------------------
 
+%----------------------------------------------------------------------------------------
+%	Section 2
+%----------------------------------------------------------------------------------------
+\newpage
+
 \section{OpenNAS overview}
 \label{sec:Overview}
 
+\subsection{Wizard overview}
+
+Once OpenNAS tool has been executed, and the Welcome screen appears, the user only needs to complete the five steps of the OpenNAS wizard to obtain the generated VHDL files.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img13_VS_Init_App.PNG}
+\caption{\label{fig:wizard_overview_welcome}Welcome screen.}
+\end{figure}
+
+The Welcome screen shows a brief text which indicates to the user what OpenNAS tool does and also the information about our research group. Click on Next button to move forward in the wizard. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img14_VS_Step1.PNG}
+\caption{\label{fig:wizard_overview_s1}Selecting commons settings.}
+\end{figure}
+
+The first step allows to the user to select the NAS common settings, which are the target FPGA chip and its clock frequency, if the NAS is MONO or STEREO, and the number of frequency channels. A picture of the FPGA-based board selected in NAS chip is shown to the user to quickly identify the needed hardware components. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img16_S2_SelectInput.PNG}
+\caption{\label{fig:wizard_overview_s2}Selecting the input interface.}
+\end{figure}
+
+In this step, the input audio source must be selected. There are several options, among which we can find the AC'97 audio codec, a pair of Pulse Density Modulation (PDM) microphones, and an I2S-based audio codec. Each input option has its own configuration parameters, which the user can set according to its project requirements.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img20_S3_Arch.PNG}
+\caption{\label{fig:wizard_overview_s3}Selecting the processing architecture.}
+\end{figure}
+
+NAS processing architecture is defined in step 3, where the user can choose either a cascade or parallel architecture. Besides, filters order and filters output attenuation can be set. Finally, the user can define a frequency range between which the NAS will work, set by default as the human audible sounds range (from 20Hz to 22KHz). 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img22_S4_OutInterface.PNG}
+\caption{\label{fig:wizard_overview_s4}Selecting the output stage.}
+\end{figure}
+
+The output interface is selected in the fourth step. As in the most of the event-based neuromorphic devices, the AER protocol is used as output. For this reason, the AER monitor is used as output interface by default and then to connect our neuromorphic sensor to the application jAER and to be able to visualize the NAS output in real-time. However, it is also interesting to connect the NAS output to others neuromorphic hardware, as the SpiNNaker board, in which Spiking Neural Networks (SNN) can be deployed and it can get as input data the output spikes from the NAS. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/Img24_S5_SaveFiles.PNG}
+\caption{\label{fig:wizard_overview_s5}Selecting the destination folder.}
+\end{figure}
+
+Finally, when all previous steps have been done, the destination folder in which the VHDL files are going to be generated has to be selected by the user. It needs to create a new folder by hand, and then select it as the destination folder. 
+
 \subsection{Requirements}
 
+\subsubsection{Software dependencies}
+
+First, we need to check some software requirements to be sure that OpenNAS tool is going to work properly. All the software packages belong to the Microsoft .NET Framework. Therefore, we will need a \textbf{Microsoft Windows OS} version running on the computer (Windows7 or Windows10). If you are not a Windows user (probably because you prefer a Linux distribution), you will need a Virtual Machine (VM) and a Windows installation. Furthermore, you should download the needed software. As IDE, \textbf{Visual Studio} was used since it provides an easy way to design Graphical User Interfaces (GUI) for Microsoft Windows OS. We will also need a specific framework, which includes features used in our software tool. In this case, \textbf{.NET Framework 4.5} was used. One of the best advantages that OpenNAS provides is the capacity of automatically generating the FPGA programming file (.bit extension) without either configure or create any project. This option is useful for people who are not familiarized with VHDL design. But, independently of what you need, you have to install \textbf{Xilinx ISE or Vivado} (depending on the FPGA chip that you use). For the AER-Node board (device by default), you will need ISE. For the rest, Vivado for Xilinx FPGA chips (supported by OpenNAS); or Intel Quartus Prime Design Software for Altera FPGA chips. Finally, since we are going to use a specific manufacturer, you will also need a proprietary software to download the programming file into the FPGA board. \textbf{iMPACT} allows you either programming the FPGA using the RAM memory (volatile option) or the FLASH memory (non-volatile option). It is usually installed at the same time that ISE is being installed. But if not, you can go to the Xilinx Download Center website and download the software
+    
+\subsubsection{Hardware setup}
+
+About the hardware requirements, you can use your own boards, but we can not offer any guarantees about the system operation. You will need a FPGA-based board, at least 20 I/O pins, and either an audio codec on-board or interface with other audio input samples, as the I2S protocol. If not, an interface module must be implemented by the user.
+If you are interested to use our neuromorphic hardware, please visit the \textcolor{blue}{\href{https://www.t-cober.es}{COBER}} website and check the neuromorphic hardware catalogue.
+
+\subsubsection{Requirements summary}
+
 \begin{itemize}
-    \item \textbf{SOFTWARE}: First of all, we need to check some software requirements to be sure that OpenNAS tool is going to work properly. All the software packages belong to the Microsoft .NET Framework. Therefore, we will need a \textbf{Microsoft Windows OS} version running on the computer (Windows7 or Windows10). If you are not a Windows user (probably because you prefer a Linux distribution), you will need a Virtual Machine (VM) and a Windows installation. Furthermore, you should download the needed software. As IDE, \textbf{Visual Studio} was used since it provides an easy way to design Graphical User Interfaces (GUI) for Microsoft Windows OS. We will also need a specific framework, which includes features used in our software tool. More specific, we need to download and install both \textbf{.NET Framework 4.0} and \textbf{.NET Framework 4.5}. One of the best advantages that OpenNAS provides is the capacity of automatically generating the FPGA programming file (.bit extension) without either configure or create any project. This option is useful for people who are not familiarized with VHDL design. But, independently of what you need, you have to install \textbf{Xilinx ISE or Vivado} (depending on the board that you use). For the AER-Node board (device by default), you will need ISE. For the rest, Vivado for Xilinx FPGA chips (supported by OpenNAS); or Intel Quartus Prime Design Software for Altera FPGA chips (not supported yet). Finally, since we are going to use a specific manufacturer, you will also need a proprietary software to download the programming file into the FPGA board. \textbf{iMPACT} allows you either programming the FPGA using the RAM memory (volatile option) or the FLASH memory (non-volatile option). It is usually installed at the same time that ISE is being installed. But if not, you can go to the Xilinx Download Center website and download the software
-    
-    \item \textbf{HARDWARE}: About the hardware requirements, you can use your own boards, but we can not offer any guarantees about the system operation. If you are interested to use our neuromorphic hardware, please visit the \textcolor{blue}{\href{https://www.t-cober.es}{COBER}} website and check the neuromorphic hardware catalogue.
-    
+    \item Software:
+        \begin{enumerate}   
+            \item Microsoft Windows OS: 7 or latest.
+            \item .NET Framework 4.5.
+            \item Xilinx ISE or Vivado.
+            \item Xilinx iMPACT.
+        \end{enumerate}
+    \item Hardware:
+        \begin{enumerate}   
+            \item FPGA-based board.
+            \item 20 I/O pins available.
+            \item audio codec with I2S protocol or PDM microphones.
+        \end{enumerate}
 \end{itemize}
 
 
+\fcolorbox{red}{white}{
+    \begin{minipage}{32em}
+        \textbf{IMPORTANT NOTES:}
+        \begin{enumerate}
+            \item Versions are important: you must be sure that your installed software versions can support the OpenNAS project. Here there is a list which indicates the needed versions to run OpenNAS:
+            \begin{itemize}
+                \item Microsoft Windows OS: Windows7, Windows8 or Windows10.
+                \item Visual Studio: Visual Studio 2015 or latest.
+                \item .NET Framework: .NET Framework 4.5.
+                \item Xilinx ISE Design Suite: ISE 14.7 \textbf{(It needs to support Spartan6 family chip)}
+                \item Xilinx Vivado: any version of Vivado.
+                \item Xilinx iMPACT: along with the ISE installation file.
+            \end{itemize}
+            \item Support are provided by our research group: \textbf{PLEASE}, let us know if you have problems with both the software and hardware dependencies/requirements. We will be happy to help you.
+        \end{enumerate}
+    \end{minipage}}
 
-
-\textbf{IMPORTANT NOTES:}
-\begin{enumerate}
-\item Versions are important: you must be sure that your installed software versions can support the OpenNAS project. Here there is a list which indicates the needed versions to run OpenNAS:
-    \begin{itemize}
-        \item Microsoft Windows OS: Windows7, Windows8 or Windows10.
-        \item Visual Studio: Visual Studio 2015 or latest.
-        \item .NET Framework: you will need two: .NET Framework 4.0 and .NET Framework 4.5
-        \item Xilinx ISE Design Suite: ISE 14.7 \textbf{(It needs to support Spartan6 family chip)}
-        \item Xilinx Vivado: any version of Vivado.
-        \item Xilinx iMPACT: along with the ISE installation file.
-    \end{itemize}
-\item More important things coming soon...
-\end{enumerate}
 
 %\subsection{Software architecture}
 
 
-\subsection{Design flow}
+\subsection{Usage flow}
+
+This section summarise the steps to follow in order to generate a NAS model as well as the files generated along the whole process, showed in Fig.\ref{fig:nas_designflow}. During the process, two parts can be distinguished, First, the OpenNAS tool has to be used to generate the VHDL files. Once that, the user can use its preferred IDE for the next steps.
 
 %Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example. You can upload a figure (JPEG, PNG or PDF) using the files menu. To include it in your document, use the includegraphics command as in the code for Figure~\ref{fig:frog} below.
 
@@ -236,10 +323,14 @@ By using OpenNAS software, the user will be able to configure each of those thre
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{NAS_design_flow.jpg}
-\caption{\label{fig:nas_designflow}Complete design flow to work with NAS, starting from the GitHub repository to showing the NAS output by jAER.}
+\caption{\label{fig:nas_designflow}Complete usage flow to work with NAS, starting from the GitHub repository to showing the NAS output by jAER.}
 \end{figure}
 
-\subsection{OpenNAS configuration options}
+Each row of the Fig.\ref{fig:nas_designflow} is independent of the others. That means the user doesn't need to repeat every step every time you want to generate a NAS model. For example, you don't need to download the OpenNAS tool every time you want to use it. However, it is recommendable to check the repository for the updates.
+
+%Some of these steps can be automated. 
+
+\subsection{OpenNAS options and parameters}
 
 %You can make lists with automatic numbering \dots
 %\begin{enumerate}
@@ -258,6 +349,8 @@ By using OpenNAS software, the user will be able to configure each of those thre
 %$$S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
       %= \frac{1}{n}\sum_{i}^{n} X_i$$
 %denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+
+Here we present a list with the available options and parameters that the user can set in the OpenNAS application. The list is sorted by following the wizard steps, i.e., following the order of appearance through the wizard.
 
 \subsubsection{Commons}
 
@@ -279,9 +372,9 @@ By using OpenNAS software, the user will be able to configure each of those thre
             \item Minimun: 2; Maximun: infinite; Recommendable: values that are 2-pow, as 8, 16, 32, 64, 128 or 256.
         \end{itemize}
     \item Clock Freq. (MHz)
-        \begin{itemize}
-            \item Depend of your target board.
-        \end{itemize}
+        %\begin{itemize}
+            %\item Depend of your target board.
+        %\end{itemize}
 \end{itemize}
 
 \subsubsection{Input}
@@ -372,19 +465,17 @@ By using OpenNAS software, the user will be able to configure each of those thre
     
     \item Number of Channels
     
-    \item Start Freq. (Hz): according to the human ear, should be 20 Hz.
+    \item Start Freq. (Hz): from 0 to 50 KHz.%according to the human ear, should be 20 Hz.
     
-    \item Stop Freq. (Hz): according to the human ear, should be 22 KHz.
+    \item Stop Freq. (Hz): from 0 to 50 KHz.%according to the human ear, should be 22 KHz.
     
-    \item SBPF Q Factor: only when Parallel SBPF Architecture is selected.
+    \item SBPF Q Factor \textbf{(only when Parallel SBPF Architecture is selected)}
     
     \item SBPF Output Att. (dB)
     
     \item Target Mid Frequencies (Hz)
     
     \item SLPF Cut-off Frequencies (Hz)
-    
-    \item SBPF Q Factor: only when Parallel SBPF Architecture is selected.
     
     \item SBPF Attenuation (dB)
     
@@ -416,12 +507,17 @@ By using OpenNAS software, the user will be able to configure each of those thre
         \end{enumerate}
 \end{itemize}
 
+\subsubsection{Generated files}
+\begin{itemize}
+    \item Destination folder.
+    \item Open folder.
+\end{itemize}
+
+\newpage
 \section{OpenNAS wizard: how to use step by step}
 \label{sec:Steps}
 
-At this point, we are ready to start using the OpenNAS software tool. Maybe, you now can think "Did I not ready before to read about spike-based signal processing?" Well, for getting started you do not need to be a professional on that topic, but if your target is to implement complex systems, it would be good to know how the NAS works.
-
-We will split the tutorial to use OpenNAS in three parts: first, we need to download the project from the NAS GitHub web page. After that, we have to either run the OpenNAS .exe file or open the OpenNAS VisualStudio project, in order to follow the OpenNAS wizard. And finally, to create an ISE project to generate the programming file needed to be loaded into the FPGA. 
+At this point, we are ready to start using the OpenNAS software tool. We will split the tutorial to use OpenNAS in three parts: first, we need to download the project from the NAS GitHub web page. After that, we have to either run the OpenNAS .exe file or open the OpenNAS VisualStudio project, in order to follow the OpenNAS wizard. And finally, to create an ISE project to generate the programming file needed to be loaded into the FPGA. 
 
 Let's do it!
 
@@ -447,7 +543,7 @@ If that link does not work either, try to navigate to the RTC research group and
 \caption{\label{fig:RTC_GitHub_page}Robotics and Technology of Computers Lab. (RTC) GitHub page.}
 \end{figure}
 
-Once you are in the OpenNAS repository, there you can find a short wiki/tutorial about what is OpenNAS, how to get started, how to use, how to contribute and, of course, how to cite our work. For us is very important the citations, so don't be shy. That wiki will be useful, but you can find more detailed information in this user manual.
+Once you are in the OpenNAS repository, there you can find a short introduction about what is OpenNAS, how to get started, how to use, how to contribute, and how to cite our work. For us is very important the citations, so don't be shy. Although this introduction can be useful, you will find more detailed information in this user manual.
 
 \begin{figure}[H]
 \centering
@@ -471,7 +567,8 @@ If you take a look within OpenNAS main folder, there are several sub-folders whi
 \caption{\label{fig:OpenNAS_folders}OpenNAS main folders.}
 \end{figure}
 
-Constraints folder is an important folder. It contains the files that you need to have well configured to use the NAS in your FPGA-based board. By default, OpenNAS includes three specific constraint files for three different boards: AER-Node board, SOC DOCK board, and ZTEX 2.13 board. If another board will be used, you must have to set your own constraint file. 
+Constraints folder is an important folder. It contains the files that you need to have well configured to use the NAS in your FPGA-based board. By default, OpenNAS includes three specific constraint files for three different boards: AER-Node board, SOC DOCK board, and ZTEX 2.13 board. If another board will be used, you must have to set your own constraint file. The constraints file can be also generated by the tool, which will be already configured according to the options and parameters selected by the user in the wizard.\\
+\textbf{Take care with that! This file is the main error source.}
 
 \begin{figure}[H]
 \centering
@@ -479,9 +576,8 @@ Constraints folder is an important folder. It contains the files that you need t
 \caption{\label{fig:OpenNAS_Constraints}Constraints files available from OpenNAS.}
 \end{figure}
 
-\textbf{Take care with that! This file is the main error source.}
 
-Related with the VHDL files, the SSP (Spike-based Signal Processing) folder contains all of the source code of the NAS. You should not modify those files, because otherwise, NAS could not work properly. But you can check how the NAS has been implemented using HDL code. 
+Regarding to VHDL files, the SSP (Spike-based Signal Processing) folder contains all of the source code of the NAS. You should not modify those files, because otherwise, NAS could not work properly. But you can check how the NAS has been implemented using HDL code. 
 
 \begin{figure}[H]
 \centering
@@ -510,20 +606,63 @@ Now, just a quick view of how those files look in the GitHub repository. This wa
 \end{figure}
 
 %----------------------------------------------------------------------------------------
+%	Software Architecture
+%----------------------------------------------------------------------------------------
+
+\subsection{Software Architecture}
+
+To represent each of the NAS' components we have used a set of classes, where each class contents all the parameters and HDL information of an specific component. The class hierarchy is presented in Fig.\ref{fig:OpenNAS_ClassDiagram}. The main NAS class is "OpenNasArchitecture", and it contains an instance of common parameters (OpenNASComponents) and one attribute for each of the three NAS components: AudioInput, AudioProcesingArchitecture and SpikesOutputInterface (Fig.\ref{fig:OpenNAS_ClassDiagram} mid). These are abstract classes than inherit from "HDLGenerable" abstract class (Fig.\ref{fig:OpenNAS_ClassDiagram} top), which contains the generic methods for HDL generation. Finally, specific components classes inherit from AudioInput, AudioProcesingArchitecture and SpikesOutputInterface, implementing each component features. Using this inheritance tree, a NAS is fully modeled and structured, being able to increase NAS components diversity easily and making software maintenance less tedious.\\
+
+For user guidance, OpenNAS implements a graphical wizard written in WPF. User can select a complete NAS setup in five steps. We have added graphical diagrams that change interactively which each selection, for user helping and to know  will be added to the final NAS design. This wizard will add specific instances to abstract members in OpenNasArchitecture class, and will fill components parameters as user selects them.
+\\
+Once a full NAS design has been specified by the user, every member in OpenNasArchitecture has a specific instance and parameter set, the last step is the HDL generation. This task performs the following steps:
+
+\begin{enumerate}  
+\item Each component writes its HDL dependency files and top entity to an output destination folder.
+\item OpenNasArchitecture creates top NAS HDL file.
+\item Sequentially each component writes I/O signals to NAS top file.
+\item Interface signals between components are added in NAS top file.
+\item Sequentially each component writes its top component architecture.
+\item Inside NAS top file each component adds an invocation to its instance, and these are connected to each others using interface signals.
+\item A template for constraint file is generated with all NAS I/O signals.
+\item Finally, a NAS summary is written as a XML file.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{OpenNASClassDiagram.PNG}
+\caption{\label{fig:OpenNAS_ClassDiagram}OpenNAS software application class diagram.}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
 %	VisualStudio project
 %----------------------------------------------------------------------------------------
 
 \subsection{Running the VS application}
 
-After to either download or clone the repository, it is time to run the OpenNAS application. The first step is to unzip the project. You will have into the new folder something like this:
+It is time to run the OpenNAS application! The user can choose between either to download or to clone the repository. 
+
+\subsubsection{Getting the project from GitHub}
+
+If you selected to download the project, the first step is to unzip the project. However, if you cloned the repository, you don't need to do it. Anyway, if we open the OpenNAS project folder, you will find these folders:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{images/Img10_OpenNAS_project.PNG}
+\includegraphics[width=0.9\textwidth]{images/Img10_OpenNAS_project.PNG}
 \caption{\label{fig:OpenNAS_unziped_project}OpenNAS C\# project files.}
 \end{figure}
 
-For running the software, you first need to open the OpenNAS solution (OpenNAS.sln), and then the VisualStudio environment will be launched. If it is the first time that you open the solution, an advertisement message should appear. Don't worry about that, it is just a warning message about malicious code.
+Then, the user can select between two options:
+
+\begin{enumerate}
+    \item Run OpenNAS: skip the Visual Studio project steps and move to the section \ref{subsubsec:run_opennas}.
+    \item Contribute to/modify the OpenNAS project: go to the next section.
+\end{enumerate}
+
+
+\subsubsection{Launching the VisualStudio project}
+
+First, double click on the OpenNAS solution (OpenNAS.sln), and then the VisualStudio IDE will be launched. If it is the first time that you open the solution, an advertisement message should appear. Don't worry about that, it is just a warning message about malicious code.
 
 \begin{figure}[H]
 \centering
@@ -539,17 +678,28 @@ Click on "Accept", and the main window project will appear. The user can change 
 \caption{\label{fig:VS_project}General view of the VisualStudio interface after open the OpenNAS project.}
 \end{figure}
 
-Now, the most difficult part: click on the "Start" button. A new window like the next one must appear...
+\subsubsection{\label{subsubsec:run_opennas}Running the OpenNAS application}
+
+For running the OpenNAS application, the required action for running the application depends on if you opened the Visual Studio Solution or not.
+
+\begin{itemize}
+    \item For user who opened the Visual Studio Solution, click on the "Start" button, and the application should begin running. 
+    \item For users who didn't open the Visual Studio Solution: go to the OpenNAS folder$\,\to\,$bin$\,\to\,$Release, and double click on OpenNAS.exe file.
+\end{itemize}
+
+In both cases, a new window like the next one must appear:
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{images/Img13_VS_Init_App.PNG}
-\caption{\label{fig:OpenNAS_Wizard_Welcome}OpenNAS wizard main window.}
+\caption{\label{fig:OpenNAS_Wizard_Welcome}OpenNAS wizard welcome screen.}
 \end{figure}
 
-\textbf{CONGRATULATIONS}, OpenNAS is now running! That is the main window of the wizard. It just has one button to go forward to the wizard. Click on "Next" button to watch the next step of the NAS generation wizard.
+\textbf{CONGRATULATIONS!}, OpenNAS is now running!\\ 
 
-In step 1, users can select the NAS common settings, as the FPGA-based board in which the NAS will be loaded. NAS type (mono or stereo) and the numbers of channels can be set too. Be careful with the last field, the clock frequency. It will be used to set the spike-based processing blocks parameters correctly. By default, each board set this field automatically according with the board clock (except if you choose "Others"). However, if you want to use another clock configuration, you can change the clock value. \textbf{Make sure you also implement this change in the VHDL files and ISE project!}
+That is the welcome screen of the wizard. Here you can find information about the original paper, the GitHub page and the OpenNAs' wiki, and a link to our University website. Click on "Next" button to start the NAS configuration.\\
+
+In step 1, users can select the NAS common settings, as the FPGA-based board in which the NAS will be loaded. NAS type (mono or stereo) and the numbers of channels can be set too. Be careful with the last field: the clock frequency. It will be used to set the spike-based processing blocks parameters correctly. By default, each board set this field automatically according with the board clock (except if you choose "Others"). However, if you want to use another clock configuration, you can change the clock value. \textbf{Make sure you also implement this change in the VHDL files and ISE project!}
 
 \begin{figure}[H]
 \centering
@@ -565,7 +715,7 @@ Here there is another board option where NAS has been tested. If we check the cl
 \caption{\label{fig:OpenNAS_s1}Setting the NAS chip to SOC\_DOCK board.}
 \end{figure}
 
-After the target board has been selected, and the common settings have been set according to your needs, it is time to select which audio input we will use. Clicking on the "Next" button, we will go to the second step of the NAS wizard.
+After the target board has been selected, and the common settings have been set according to your needs, it is time to select which audio input we will use. Clicking on the "Next" button, we will go to the second step of the NAS wizard.\\
 
 The AC'97 audio codec is selected by default. Although it is not used in the AER-Node board, it was the first audio input device used by other Xilinx FPGA-based board. This option let you only to modify the spikes generation module clock divisor.
 
@@ -575,7 +725,7 @@ The AC'97 audio codec is selected by default. Although it is not used in the AER
 \caption{\label{fig:OpenNAS_s2_ac97}Audio input from AC'97 audio codec.}
 \end{figure}
 
-There exist a new version of audio input interface. It consists in a PCB which has a pair of PDM microphones and also a new ADC for audio signals. This PCB was designed to be used along with the AER-Node board. Then, if you decided to use AER-Node board, you will be able to use the audio codec. This option is called "I2S" because the codec use that communication protocol to transfer the data.
+There exist a new version of the audio input interface. It consists of a PCB which has a pair of PDM microphones and also a new ADC for audio signals. This PCB was designed to be used along with the AER-Node board. Then, if you decided to use AER-Node board, you will be able to use the audio codec. This option is called "I2S" because the codec uses that communication protocol to transfer the data.
 
 \begin{figure}[H]
 \centering
@@ -583,7 +733,7 @@ There exist a new version of audio input interface. It consists in a PCB which h
 \caption{\label{fig:OpenNAS_s2_i2s}Audio input from line-in connector.}
 \end{figure}
 
-Also, as we mentioned before, you can select to use the PDM microphones. User can set a lot of parameters, since it was implemented a FPGA module to convert the microphones output to spikes using several spike-based high/low pass filters.
+As we mentioned before, you can also select the PDM microphones as input interface. User can set a lot of parameters since it was implemented an FPGA module to convert the microphones' output to spikes using several spike-based high/low pass filters.
 
 \begin{figure}[H]
 \centering
@@ -591,7 +741,7 @@ Also, as we mentioned before, you can select to use the PDM microphones. User ca
 \caption{\label{fig:OpenNAS_s2_pdm}Audio input from PDM microphones.}
 \end{figure}
 
-Thus the audio input interface board implements two different sound input devices, and the process of programming file is quiet long, the tool offers you the possibility of select both inputs, and to select which one would you use by using a jumper placed on the PCB.
+Since the audio input interface board implements two different sound input devices, the tool offers you the possibility of select both inputs, and to select which one would you use by using a jumper placed on the PCB.
 
 \begin{figure}[H]
 \centering
@@ -599,7 +749,7 @@ Thus the audio input interface board implements two different sound input device
 \caption{\label{fig:OpenNAS_s2_i2s_pdm}Audio input from either line-in connector or PDM microphones, selected by a jumper position.}
 \end{figure}
 
-Now, let's begin to configure the most important part of the NAS model. The original NAS's filters architecture is in cascade, according to the biology. So, by default this option is selected. Yo can establish a frequency range, which is defined by default with the human audible sound range (from 20 Hz to 22 KHz). A critical parameter is the SBPF Output Att. (dB), due to this parameter modify the filters output attenuation, that means it controls the amount of spikes that we will have in the NAS output. By decreasing the value, less spikes will be obtained at the output. Actually, we are working with values close to -30 dB. 
+Now, let's begin to configure the most important part of the NAS model. The original NAS's filters architecture is in cascade, according to the biology. Then, this option is selected by default. You can establish a frequency range, which is defined by default with the human audible sound range (from 20 Hz to 22 KHz). A critical parameter is the SBPF Output Att. (dB), due to this parameter modify the filters output attenuation, that means it controls the number of spikes that we will have in the NAS output. By decreasing the value, less spikes will be obtained at the output. Actually, we are working with values close to -30 dB. 
 
 \begin{figure}[H]
 \centering
@@ -607,9 +757,9 @@ Now, let's begin to configure the most important part of the NAS model. The orig
 \caption{\label{fig:OpenNAS_s3_cascade}Selecting the NAS architecture. Cascade architecture is mostly used, and it is by default in the OpenNAS.}
 \end{figure}
 
-Filter's channels frequencies are calculated automatically by the software based on the specified architecture by the user. However, if you modify the attenuation value, you need to click on "Tune frequencies" button to recalculated all the parameters.
+Filter's channels frequencies are calculated automatically by the software based on the specified architecture by the user. If you modify the attenuation value or any other parameter, all the parameters will be recalculated automatically.\\
 
-There is another NAS architecture approach, the parallel filter bank architecture. The parallel architecture is still under develop, but if you are curious you can take a look and try to use it.
+There is another NAS architecture approach, the parallel filter bank architecture:
 
 \begin{figure}[H]
 \centering
@@ -617,7 +767,7 @@ There is another NAS architecture approach, the parallel filter bank architectur
 \caption{\label{fig:OpenNAS_s3_parallel}Parallel architecture open a different approach to the audio processing.}
 \end{figure}
 
-Almost the end, but not less important. It is time to choose the output interface. This step is completely dependent of what do you want to do by using the NAS. According with our experience, we recommend first to select the Spikes Distributed Monitor, which allows you to visualize the NAS output in real-time using the jAER software. Then, you can perform some recordings with your audio input dataset, and to analyze it by using the NAVIS tool, specifically designed and implemented for that purpose. NOTE: it is not recommendable to change the parameter values unless you need it.
+Almost the end, but not less important. It is time to choose the output interface. This step is completely dependent on the project in which the NAS will be used. According to our experience, we recommend first to select the Spikes Distributed Monitor, which allows you to visualize the NAS output in real-time using the jAER software. Then, you can perform some recordings with your audio input dataset, and to analyze it by using the NAVIS tool, specifically designed and implemented for that purpose. \textbf{NOTE: it is not recommendable to change the parameter values unless you need it}.
 
 \begin{figure}[H]
 \centering
@@ -625,7 +775,7 @@ Almost the end, but not less important. It is time to choose the output interfac
 \caption{\label{fig:OpenNAS_s4_monitor}Using the AER Distributed Monitor as output interface allow you to monitor the NAS output in real time..}
 \end{figure}
 
-After checking the NAS output, and to be sure that the output will be useful for you, OpenNAS allows you the possibility of to connect the NAS with the SpiNNaker machine (both 4-chips and 48-chips machines). There are two versions of the AER-SpiNNaker interface; the v1, which is able to send spikes from the NAS to the SpiNNaker machine through the SpiNNaker link (using an adapter board). Any parameters are not needed in this case.
+After checking the NAS output, and to be sure that the output will be useful for you, OpenNAS allows you the possibility of to connect the NAS with the SpiNNaker machine (both SpiNN3 and SpiNN5 machines). There are two versions of the AER-SpiNNaker interface; the v1, which is able to send spikes from the NAS to the SpiNNaker machine through the SpiNNaker link (using an adapter board). Any parameters are not needed in this case.
 
 \begin{figure}[H]
 \centering
@@ -633,11 +783,11 @@ After checking the NAS output, and to be sure that the output will be useful for
 \caption{\label{fig:OpenNAS_s4_spinnv1}With SpiNNaker interface v1 you can send AER events from the NAS to the SpiNNaker machine.}
 \end{figure}
 
-The second version of AER-SpiNNaker interface is an adaptation of the work performed by Luis Plana to connect AER devices with the SpiNNaker machine in real time allowing bi-directional communication. Here you are the \textcolor{blue}{\href{https://github.com/SpiNNakerManchester/spio}{GitHub link}} of the original repository. There is also a complete documentation which we used to modify the original version in \textcolor{blue}{\href{http://spinnakermanchester.github.io/docs/fpga_aer/}{this link}}.
+The second version of AER-SpiNNaker interface is an adaptation of the work performed by Luis Plana to connect AER devices with the SpiNNaker machine in real time allowing bi-directional communication. Here you are the \textcolor{blue}{\href{https://github.com/SpiNNakerManchester/spio}{GitHub link}} of the original repository. There is also a complete documentation which we used to modify the original version in \textcolor{blue}{\href{http://spinnakermanchester.github.io/docs/fpga_aer/}{this link}}.\\
 
-And, why don we not have a mixed output between AER monitor and SpiNNaker? Of course, we have implemented a version in which you can monitor the NAS output that are being sending to the SpiNNaker machine using jAER. But it could be a problem, because for each output spike, you will need the ACK signal from both jAER application and SpiNNaker machine. Hence, the system could work slowly.
+And, why do we not have a mixed output between AER monitor and SpiNNaker? Of course, we have implemented a version in which you can monitor the NAS output that is being sent to the SpiNNaker machine using jAER. But it could be a problem because, for each output spike, you will need the ACK signal from both jAER application and SpiNNaker machine. Hence, the system could work more slowly.\\
 
-The last step, after spend like... 2 minutes setting the OpenNAS is to generate the NAS files according with your parameters. You need to specify a folder in which all the files will be copied.
+The last step after setting up the OpenNAS' parameters is to generate the NAS files according to the selected parameters. You need to specify a folder in which all the files will be generated.
 
 \begin{figure}[H]
 \centering
@@ -645,7 +795,7 @@ The last step, after spend like... 2 minutes setting the OpenNAS is to generate 
 \caption{\label{fig:OpenNAS_s5_destination_folder}Select a destination folder to save the NAS files.}
 \end{figure}
 
-We recommend to create a very simple folders architecture: the main folder, named for example NAS\_PDM\_64ch\_MONO\_Monitor, and one folder to the source files, named "sources", and another one in which the ISE project will be created, named "project". Once the destination folder is selected, just click on the "Finish" button.
+If everything is OK, a message window should appear telling you "OpenNAS successfully generated" and also showing you the destination folder. At this point, NAS HDL files have been generated and you can take a look of the source code.
 
 \begin{figure}[H]
 \centering
@@ -653,20 +803,21 @@ We recommend to create a very simple folders architecture: the main folder, name
 \caption{\label{fig:OpenNAS_s5_success}Files were generated successfully.}
 \end{figure}
 
-If everything is OK, a message window should appear telling you "OpenNAS successfully generated" and also showing you the destination folder. At this point, NAS HDL files has been generated taking into account your preferences, and you can take a look of the source code.
-
-
 %----------------------------------------------------------------------------------------
 %	ISE HDL project
 %----------------------------------------------------------------------------------------
 
-\subsection{Creating a Xilinx ISE project}
+\subsection{What's next? Generating the bitfile}
 
-By now, a lot of things have been taking into account to generate correctly your NAS model. And in this moment, since we already have the NAS VHDL files, you can decide what will you do with those files. You could want just load the files into the FPGA, or maybe you need to add new VHDL modules or modify the NAS VHDL modules to test something... In any case, you will need to create a new ISE project to, finally, generate the programming file with .bit extension and then to program the FPGA.
+By now, a lot of things have been taking into account to generate correctly your NAS model. And at this moment, since we already have the NAS VHDL files, you can decide what will you do with those files. You could want just load the files into the FPGA, or maybe you need to add new VHDL modules or modify the NAS VHDL modules to test something... In any case, you will need to create a new VHDL project to, finally, generate the programming file with .bit extension and then program the FPGA.\\
 
-If you have an AER-Node board, SOC\_DOCK board or ZTEX 2.13 board (OpalKelly will be available soon), and you do not want to add/change any VHDL modules, you can directly get the .bit file by running a .tcl script by using the ISE Design Suite 32 Bit Command Prompt. (Still under development, but it will be available soon!).
+If you have an AER-Node board, SOC\_DOCK board or ZTEX 2.13 board (OpalKelly will be available soon), and you do not want to add/change any VHDL modules, you can directly get the .bit file by running a .tcl script by using the ISE Design Suite 32 Bit Command Prompt.
 
-Meanwhile, of if you do not have one of those boards, you will need to create a ISE project manually, to configure it correctly and to add the source files by hand. First step, of course, is open the ISE 32-bit Project Navigator. The icon looks like is showed in the next Figure~\ref{fig:ISE_icon}:
+If not, if you do not have one of those boards or you would like to modify the source files, you will need to create an ISE project manually, to configure it correctly and to add the source files by hand.
+
+\subsubsection{Creating a Xilinx ISE project}
+
+The first step is to open the ISE 32-bit Project Navigator. The icon looks like is showed in the next Figure~\ref{fig:ISE_icon}:
 
 \begin{figure}[H]
 \centering
@@ -674,7 +825,7 @@ Meanwhile, of if you do not have one of those boards, you will need to create a 
 \caption{\label{fig:ISE_icon}ISE Project Navigator icon.}
 \end{figure}
 
-Left click on the icon twice, and then the project navigator will be opened. Next image show us how the program looks like when it is started.
+Left click on the icon, and then the project navigator will be opened. Next image show us how the program looks like when it is started.
 
 \begin{figure}[H]
 \centering
@@ -682,7 +833,7 @@ Left click on the icon twice, and then the project navigator will be opened. Nex
 \caption{\label{fig:ISE_main_windows}ISE Project Navigator main view.}
 \end{figure}
 
-So, we need first to create a new project. To do that, go to File, and select New Project.
+We need first to create a new project. To do that, go to File, and select New Project.
 
 \begin{figure}[H]
 \centering
@@ -690,7 +841,7 @@ So, we need first to create a new project. To do that, go to File, and select Ne
 \caption{\label{fig:ISE_create_project}Creating a new project in ISE Project Navigator.}
 \end{figure}
 
-Then a new window appear. This is the New Project Wizard, and it is easy to follow. Let's start it.
+Then a new window appears. This is the New Project Wizard, and it is easy to follow. Let's start it.
 
 \begin{figure}[H]
 \centering
@@ -698,7 +849,7 @@ Then a new window appear. This is the New Project Wizard, and it is easy to foll
 \caption{\label{fig:ISE_project_wizard}ISE new project wizard.}
 \end{figure}
 
-Like in every new project, you have to indicate the project name. According to the folders architecture aforementioned, we recommend to select the same name used by the sources folder. In our case, our project will be named NAS\_PDM\_64ch\_MONO\_Monitor. And the location will be ../NAS\_PDM\_64ch\_MONO\_Monitor/project/. Now, click on the "Next" button.
+Like in every new project, you have to indicate the project name. According to the folders architecture aforementioned, we recommend selecting the same name used by the sources folder. In our case, our project will be named NAS\_PDM\_64ch\_MONO\_Monitor. And the location will be ../NAS\_PDM\_64ch\_MONO\_Monitor/project/. Now, click on the "Next" button.
 
 \begin{figure}[H]
 \centering
@@ -706,7 +857,7 @@ Like in every new project, you have to indicate the project name. According to t
 \caption{\label{fig:ISE_name_location_project}Setting the ISE project name and the project localization.}
 \end{figure}
 
-\textbf{CAUTION!} This step should be done carefully. In the project settings step, the FPGA chip must be selected. Make sure that all the fields have the same values that the showed in the image. Those values are only valid if the AER-Node board is used. For others board, user should make its own project settings. 
+\textbf{CAUTION!} This step should be done carefully. In the project settings step, the FPGA chip must be selected. Make sure that all the fields have the same values that the showed in the image. Those values are only valid if the AER-Node board is used. For others board, the user should make its own project settings. 
 
 \begin{figure}[H]
 \centering
@@ -714,7 +865,7 @@ Like in every new project, you have to indicate the project name. According to t
 \caption{\label{fig:ISE_project_settings}Correct project settings to create a ISE project for the AER-Node board.}
 \end{figure}
 
-At the end of the wizard, a summary of the new project is showed. Check this summary to prevent future errors. If everything is correct, click on "Finish".
+At the end of the wizard, a summary of the new project is shown. Check this summary to prevent future errors. If everything is correct, click on "Finish".
 
 \begin{figure}[H]
 \centering
@@ -730,7 +881,9 @@ Our project is now created, and we can see in the top left a new folder with the
 \caption{\label{fig:ISE_project_created}Main view after create a new project.}
 \end{figure}
 
-And now, the last "very important" step, which is to add the NAS VHDL files generated by the OpenNAS into the new ISE project. But, why is this an important step? There are many reasons, but the two more important reasons are: because you need to add the correct files, and because is recommendable to add those files, not to add a copy of those files. Let see. First, make right click either on the project folder or on the selected chip. A menu appears, and then select "Add sources".
+\subsubsection{Adding the NAS source files to the project}
+
+The NAS VHDL files generated by the OpenNAS will be now added into the new ISE project. First, make right click either on the project folder or on the selected chip. A new menu appears. Then select "Add sources".
 
 \begin{figure}[H]
 \centering
@@ -738,7 +891,7 @@ And now, the last "very important" step, which is to add the NAS VHDL files gene
 \caption{\label{fig:ISE_add_sources}Ready for adding the NAS VHDL sources.}
 \end{figure}
 
-An emergent windows should appear to navigate where the NAS VHDL sources are. But be careful, if it is not the first project that you have created, then you may select the wrong OpenNAS sources with different parameters. If you follow our recommendation of how to organize the NAS projects, the source files should be in ../NAS\_PDM\_64ch\_MONO\_Monitor/sources/.
+An emergent window should appear to navigate where the NAS VHDL sources are. But be careful, if it is not the first project that you have created, then you may select the wrong OpenNAS sources with different parameters. The source files should be in ../NAS\_PDM\_64ch\_MONO\_Monitor/sources/.
 
 \begin{figure}[H]
 \centering
@@ -754,7 +907,7 @@ When there, just select all the files, and click on "Open" button to add them.
 \caption{\label{fig:ISE_select_all}Select all the files, except the .xml file.}
 \end{figure}
 
-In a ISE project, source files can be included for simulation, for implementation, or for all. If we take a look, by default all files have the field "Association" to "All" except the constraint file .ucf, which does not make sense in a simulation process. We do not need change any values. But if you want to add a testbench file, the file association should be "Simulation". Click on "OK" to finish this step.
+In an ISE project, source files can be included for simulation, for implementation, or for all. If we take a look, by default all files have the field "Association" to "All" except the constraint file .ucf, which does not make sense in a simulation process. We do not need to change any values. But if you want to add a testbench file, the file association should be "Simulation". Click on "OK" to finish this step.
 
 \begin{figure}[H]
 \centering
@@ -778,7 +931,9 @@ By analyzing that hierarchy, it is easy to identify the three different parts in
 \caption{\label{fig:ISE_project_hierarchy}OpenNAS project modules hierarchy.}
 \end{figure}
 
-Finally, to start the process of programming file generation, we have to make left click on the top file of the VHDL files hierarchy, and just below some options will appear.
+\subsubsection{Generating the programming file}
+
+Finally, to start the process of programming-file generation, we have to make a left click on the top file of the VHDL files hierarchy, and just below some options will appear.
 
 \begin{figure}[H]
 \centering
@@ -794,22 +949,24 @@ Just making double left click on the Generate Programming File option, the entir
 \caption{\label{fig:running_generating_prog_file}Running the Generation Programming File process.}
 \end{figure}
 
-Say "need to wait".
+This process will take between 15 and 20 minutes depending on your computer's resources.
 
 %----------------------------------------------------------------------------------------
 %	Load bitfile
 %----------------------------------------------------------------------------------------
 
-\subsection{Loading bitfile into the AER-Node board}
+\subsubsection{Loading bitfile into the AER-Node board}
 
 Once the .bit file has been generated, you need to load it into FPGA. Click on this \textcolor{blue}{ \href{https://github.com/RTC-research-group/AERtools/tree/master/AERNode/NAS/NAS_user_manual}{NAS setup getting started}} link to carry out that process. Moreover, to perform the post-processing step, visit \textcolor{blue}{ \href{https://github.com/jpdominguez/NAVIS-Tool}{NAVIS GitHub website}} \cite{dominguez2017navis}.
 
+\newpage
 \section{Some tricks!}
 
 \begin{itemize}
-    \item If you select SpiNNaker v1 as output interface, it would be recommendable to reset both boards in a specific order: push reset button from both boards, then leave the reset button from SpiNNaker, wait until the Ethernet LED's start to blink, and finally leave the reset button from AER-Node board.
+    \item If you select SpiNNaker v1 as output interface, it would be recommendable to reset both boards in a specific order: push reset button from both boards, then leave the reset button from SpiNNaker, wait until the Ethernet LED's start to blink, and finally leave the reset button from AER-Node board. This process is for being sure that the communication between both boards is synchronized.
 \end{itemize}{}
 
+\newpage
 \bibliographystyle{abbrv}
 \bibliography{OpenNASTutorial_references.bib} 
 % Note the lack of whitespace between the commas and the next bib file.
